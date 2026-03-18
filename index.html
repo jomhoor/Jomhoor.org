@@ -32,12 +32,12 @@
         <a href="#how-it-works" class="nav__link">چگونه کار می‌کند</a>
         <a href="#identity" class="nav__link">هویت</a>
         <a href="#deliberation" class="nav__link">مشورت</a>
-        <a href="#ranked-pairs" class="nav__link">جفت‌های رتبه‌ای</a>
         <a href="#compass" class="nav__link">قطب‌نما</a>
         <a href="#app" class="nav__link">اپلیکیشن</a>
         <a href="#ecosystem" class="nav__link">اکوسیستم</a>
+        <a href="mailto:admin@jomhoor.org" class="nav__link">تماس</a>
         <a href="en/index.html" class="nav__lang">EN</a>
-        <a href="#act" class="nav__link nav__link--cta">اکنون اقدام کنید</a>
+        <a href="#act" class="nav__link nav__link--cta">همکاری کنید</a>
       </div>
       <button class="nav__toggle" id="navToggle" aria-label="منوی ناوبری">
         <span></span><span></span><span></span>
@@ -906,11 +906,11 @@
     </div>
   </section>
 
-  <!-- اکنون اقدام کنید -->
-  <section class="section" id="act">
+  <!-- همکاری کنید -->
+  <section class="section section--cta" id="act">
     <div class="container">
       <div class="cta-block" data-animate>
-        <h2 class="cta-block__title">اکنون اقدام کنید</h2>
+        <h2 class="cta-block__title">همکاری کنید</h2>
         <p class="cta-block__desc">جمهور یک ساختمان نیست. عمل مردم است که با هم حکومت می‌کنند. مشارکت شما به خزانه‌ای شفاف و تحت حکمرانی شهروندان می‌پیوندد.</p>
 
         <div class="cta-actions">
@@ -932,9 +932,11 @@
               <span class="wallet-address__label">Solana</span>
               <code class="wallet-address__value wallet-address__value--small">3Eg6gRfRkU2wm4pZfTMWGTUYgyiveuRthJrD4tYyZnYT</code>
             </div>
-            <a href="https://app.ens.domains/cyberdemocracy.eth" target="_blank" class="btn btn--outline btn--small">
-              تأیید آدرس‌ها در ENS
-            </a>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem;">
+              <a href="https://app.ens.domains/cyberdemocracy.eth" target="_blank" class="btn btn--outline btn--small">تأیید آدرس‌ها در ENS</a>
+              <a href="https://www.paypal.com/donate/?hosted_button_id=JVM7M4KAT7XPC" target="_blank" class="btn btn--outline btn--small">PayPal</a>
+              <a href="https://www.patreon.com/c/jomhoor" target="_blank" class="btn btn--outline btn--small">Patreon</a>
+            </div>
           </div>
 
           <div class="cta-action-card">
@@ -954,18 +956,18 @@
                   <small>در گیت‌هاب مشارکت کنید</small>
                 </span>
               </a>
-              <a href="https://matrix.to/#/#idcdn:matrix.org" target="_blank" class="cta-link">
+              <div class="cta-link">
                 <span class="cta-link__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg></span>
                 <span>
                   <strong>ارتباط برقرار کنید</strong>
-                  <small>به ما در Matrix بپیوندید</small>
+                  <small><a href="https://matrix.to/#/#idcdn:matrix.org" target="_blank">Matrix</a> · <a href="https://www.instagram.com/jomhoororg" target="_blank">Instagram</a> · <a href="https://x.com/jomhoorOrg" target="_blank">X</a></small>
                 </span>
-              </a>
-              <a href="https://www.agoracitizen.app/" target="_blank" class="cta-link">
+              </div>
+              <a href="https://taraaz.jomhoor.org" target="_blank" class="cta-link">
                 <span class="cta-link__icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="3" y1="22" y2="12"/><line x1="9" x2="9" y1="22" y2="8"/><line x1="15" x2="15" y1="22" y2="12"/><line x1="21" x2="21" y1="22" y2="8"/><path d="M2 22h20"/><path d="M12 2l10 6H2l10-6z"/></svg></span>
                 <span>
                   <strong>مشورت کنید</strong>
-                  <small>به گفتگو در آگورا بپیوندید</small>
+                  <small>به گفتگو در تراز بپیوندید</small>
                 </span>
               </a>
             </div>
@@ -986,8 +988,6 @@
         </div>
         <div class="custodian__links">
           <a href="mailto:info@transcf.org" class="custodian__link">info@transcf.org</a>
-          <a href="https://matrix.to/#/#idcdn:matrix.org" target="_blank" class="custodian__link">Matrix: #idcdn:matrix.org</a>
-          <a href="https://github.com/orgs/jomhoor/repositories" target="_blank" class="custodian__link">GitHub: jomhoor</a>
           <a href="https://github.com/tcfev" target="_blank" class="custodian__link">GitHub: TCF</a>
         </div>
       </div>
@@ -1018,7 +1018,7 @@
         <div class="footer__col">
           <h4>منابع</h4>
           <a href="https://armantorkzaban.com/posts/republic/" target="_blank">مانیفست جمهور</a>
-          <a href="https://armantorkzaban.com/posts/Eram-Citizen-State-A-Proposal/" target="_blank">دولت‌شهر ارم</a>
+          <a href="https://armantorkzaban.com/posts/Eram-Citizen-State-A-Proposal/" target="_blank">شهرونددولت ارم</a>
           <a href="https://cyberdemocracy-eth.github.io/campaign-website/" target="_blank">وبسایت کمپین</a>
           <a href="https://github.com/orgs/jomhoor/repositories" target="_blank">گیت‌هاب</a>
         </div>
@@ -1027,7 +1027,6 @@
         <p>&copy; ۲۰۲۶ جمهور. متن‌باز. مقاوم در برابر سانسور.</p>
         <div class="footer__bottom-links">
           <a href="https://github.com/orgs/jomhoor/repositories" target="_blank">گیت‌هاب</a>
-          <a href="https://matrix.to/#/#idcdn:matrix.org" target="_blank">Matrix</a>
           <a href="https://iranians.vote/" target="_blank">Iranians.Vote</a>
           <a href="en/index.html">English</a>
           <a href="mailto:admin@jomhoor.org">تماس</a>
