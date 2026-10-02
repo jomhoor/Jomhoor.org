@@ -138,7 +138,7 @@
 }
 
 [data-theme="light"] .nav__lang {
-  border-left-color: rgba(0, 0, 0, 0.12);
+  border-inline-start-color: rgba(0, 0, 0, 0.12);
 }
 
 [data-theme="light"] .nav__link--cta {
@@ -221,12 +221,6 @@
   filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.2));
 }
 
-@media (max-width: 768px) {
-  [data-theme="light"] .nav__links {
-    background: rgba(245, 247, 250, 0.98);
-  }
-}
-
 /* Reset & Base */
 *, *::before, *::after {
   margin: 0;
@@ -249,6 +243,10 @@ body {
 }
 
 /* Persian / RTL pages use Nian instead of Inter */
+html[dir="rtl"] {
+  font-size: 106.25%;
+}
+
 html[dir="rtl"] body {
   font-family: 'Nian', 'Vazirmatn', system-ui, sans-serif;
   line-height: 1.8;
@@ -325,10 +323,19 @@ code {
 
 .nav--scrolled {
   background: rgba(17, 17, 17, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-color);
   padding: 12px 0;
+}
+
+/* Blur lives on a pseudo-element: backdrop-filter on .nav itself would make it
+   the containing block of the fixed mobile menu and squash the panel. */
+.nav--scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .nav__container {
@@ -338,6 +345,7 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 32px;
 }
 
 .nav__logo {
@@ -384,7 +392,7 @@ code {
 .nav__links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
 }
 
 .nav__link {
@@ -395,7 +403,8 @@ code {
   white-space: nowrap;
 }
 
-.nav__link:hover {
+.nav__link:hover,
+.nav__link--active {
   color: var(--text-primary);
 }
 
@@ -416,8 +425,8 @@ code {
   font-size: 0.8125rem;
   font-weight: 400;
   color: var(--text-muted);
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
-  padding-left: 16px;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+  padding-inline-start: 16px;
 }
 
 .nav__lang:hover {
@@ -428,11 +437,27 @@ code {
 .nav__toggle {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
+  width: 44px;
+  height: 44px;
+  margin-inline-end: -10px;
   background: none;
   border: none;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  color: var(--text-primary);
+}
+
+.nav__toggle:focus-visible,
+.nav__logo-dot:focus-visible,
+.nav__link:focus-visible,
+.nav__lang:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .nav__toggle span {
@@ -2161,36 +2186,60 @@ html[dir="rtl"] .agora-term {
 }
 
 /* ========================================
-   Responsive
+   Navigation — hamburger menu below 1200px
+   (the English menu needs ~1130px of the 1152px container)
    ======================================== */
-@media (max-width: 1024px) {
-  /* — Nav: switch to hamburger menu — */
-  .nav__links {
-    display: none;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(17, 17, 17, 0.98);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    z-index: 1001;
-  }
-
-  .nav__links.nav__links--open {
-    display: flex;
-  }
-
+@media (max-width: 1199px) {
   .nav__toggle {
     display: flex;
   }
 
+  .nav__logo,
+  .nav__toggle {
+    position: relative;
+    z-index: 2;
+  }
+
+  .nav__links {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 88px var(--container-padding) 32px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(17, 17, 17, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .nav__links.nav__links--open {
+    display: flex;
+    animation: nav-panel-in 0.2s ease;
+  }
+
+  .nav__link {
+    font-size: 1.125rem;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-color);
+    white-space: normal;
+  }
+
+  .nav__lang {
+    align-self: flex-start;
+    margin-top: 24px;
+    font-size: 0.9375rem;
+    padding: 8px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+  }
+
   .nav__toggle--open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
+    transform: translateY(7px) rotate(45deg);
   }
 
   .nav__toggle--open span:nth-child(2) {
@@ -2198,18 +2247,43 @@ html[dir="rtl"] .agora-term {
   }
 
   .nav__toggle--open span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-
-  .nav__lang {
-    border-left: none;
-    padding-left: 0;
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   [data-theme="light"] .nav__links {
     background: rgba(245, 247, 250, 0.98);
   }
 
+  [data-theme="light"] .nav__lang {
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* Very narrow phones: let long button labels wrap instead of overflowing */
+@media (max-width: 400px) {
+  .btn {
+    white-space: normal;
+    max-width: 100%;
+  }
+}
+
+@keyframes nav-panel-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__links.nav__links--open { animation: none; }
+}
+
+html.nav-open {
+  overflow: hidden;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media (max-width: 1024px) {
   .gaps-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2827,6 +2901,7 @@ html[dir="rtl"] .agora-term {
   background: var(--component-primary);
   border-radius: 6px;
   border: 1px solid var(--border-color);
+  overflow-wrap: anywhere;
 }
 .prose pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;

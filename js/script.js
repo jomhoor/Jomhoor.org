@@ -4,8 +4,10 @@
 
 /* Apply stored theme immediately — before any DOMContentLoaded listener fires */
 (function(){
-  var t = localStorage.getItem('republic-theme');
-  if (t) document.documentElement.setAttribute('data-theme', t);
+  try {
+    var t = localStorage.getItem('republic-theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
 })();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,39 +28,88 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ——— Mobile Navigation Toggle ———
-  const navToggle = document.getElementById('navToggle');
+  const navToggle = document.getElementById('navToggle') || nav?.querySelector('.nav__toggle');
   const navLinks = document.getElementById('navLinks') || nav?.querySelector('.nav__links');
+  const desktopNav = window.matchMedia('(min-width: 1200px)');
+
+  const setMenuOpen = (open, { restoreFocus = false } = {}) => {
+    if (!navToggle || !navLinks) return;
+    navToggle.classList.toggle('nav__toggle--open', open);
+    navLinks.classList.toggle('nav__links--open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    document.documentElement.classList.toggle('nav-open', open);
+    if (open) navLinks.querySelector('a')?.focus({ preventScroll: true });
+    else if (restoreFocus) navToggle.focus();
+  };
 
   if (navToggle && navLinks) {
+    if (!navLinks.id) navLinks.id = 'navLinks';
+    navToggle.setAttribute('aria-controls', navLinks.id);
+    navToggle.setAttribute('aria-expanded', 'false');
+
     navToggle.addEventListener('click', () => {
-      navToggle.classList.toggle('nav__toggle--open');
-      navLinks.classList.toggle('nav__links--open');
-      document.body.style.overflow = navLinks.classList.contains('nav__links--open') ? 'hidden' : '';
+      setMenuOpen(!navLinks.classList.contains('nav__links--open'));
     });
+
+    // Close on any link (sections, docs, language switch)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    // Close when tapping the panel's empty area
+    navLinks.addEventListener('click', (e) => {
+      if (e.target === navLinks) setMenuOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('nav__links--open')) {
+        setMenuOpen(false, { restoreFocus: true });
+      }
+    });
+
+    desktopNav.addEventListener('change', (e) => {
+      if (e.matches) setMenuOpen(false);
+    });
+  }
+
+  // ——— Highlight the menu link of the section in view ———
+  const sectionLinks = navLinks
+    ? [...navLinks.querySelectorAll('.nav__link[href^="#"]')]
+        .map(link => ({ link, section: document.querySelector(link.getAttribute('href')) }))
+        .filter(({ section }) => section)
+    : [];
+
+  if (sectionLinks.length) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        sectionLinks.forEach(({ link, section }) => {
+          const active = section === entry.target;
+          link.classList.toggle('nav__link--active', active);
+          if (active) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sectionLinks.forEach(({ section }) => spy.observe(section));
   }
 
   // ——— Theme Toggle (Light / Dark) ———
   const themeToggle = document.getElementById('themeToggle');
 
   if (themeToggle) {
-    themeToggle.addEventListener('click', (e) => {
+    const toggleTheme = (e) => {
       e.preventDefault();
       e.stopPropagation();
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('republic-theme', next);
-    });
-  }
-
-  // Close mobile nav on link click
-  if (navLinks) {
-    navLinks.querySelectorAll('.nav__link').forEach(link => {
-      link.addEventListener('click', () => {
-        navToggle?.classList.remove('nav__toggle--open');
-        navLinks.classList.remove('nav__links--open');
-        document.body.style.overflow = '';
-      });
+      try { localStorage.setItem('republic-theme', next); } catch {}
+    };
+    themeToggle.setAttribute('tabindex', '0');
+    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') toggleTheme(e);
     });
   }
 
