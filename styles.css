@@ -251,6 +251,7 @@ body {
 /* Persian / RTL pages use Nian instead of Inter */
 html[dir="rtl"] body {
   font-family: 'Nian', 'Vazirmatn', system-ui, sans-serif;
+  line-height: 1.8;
   word-spacing: 0.2em;
 }
 
@@ -847,6 +848,11 @@ code {
   background: linear-gradient(180deg, var(--accent-primary), transparent);
 }
 
+html[dir="rtl"] .step__connector {
+  left: auto;
+  right: 20px;
+}
+
 .step:last-child .step__connector {
   display: none;
 }
@@ -913,6 +919,11 @@ code {
 /* ========================================
    Agora Terminal Demo
    ======================================== */
+/* Terminal output stays left-to-right on Persian pages */
+html[dir="rtl"] .agora-term {
+  direction: ltr;
+}
+
 /* ── Terminal: CSS custom properties (dark default, light override) ── */
 .agora-term {
   --term-bg:        #0d0d0d;
