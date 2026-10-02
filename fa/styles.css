@@ -2486,3 +2486,9 @@ img {
     fill: #ffffff;
   }
 }
+
+.section__desc a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

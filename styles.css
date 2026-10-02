@@ -756,27 +756,11 @@ code {
   overflow: hidden;
 }
 
-.gap-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent-gradient);
-  opacity: 0;
-  transition: opacity var(--transition);
-}
-
 .gap-card:hover {
   border-color: var(--border-accent);
   background: var(--bg-card-hover);
   transform: translateY(-4px);
   box-shadow: var(--shadow-glow);
-}
-
-.gap-card:hover::before {
-  opacity: 1;
 }
 
 .gap-card__number {
@@ -1265,16 +1249,6 @@ code {
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
-}
-
-.identity-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--accent-gradient);
 }
 
 .identity-card__header {
@@ -3128,4 +3102,10 @@ code {
 /* RTL: flip border on blockquote */
 html[dir="rtl"] .prose blockquote {
   border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.section__desc a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
