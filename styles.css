@@ -1231,12 +1231,10 @@ html[dir="rtl"] .agora-term {
   align-items: center;
 }
 
-.feature-split--reverse {
-  direction: rtl;
-}
-
-.feature-split--reverse > * {
-  direction: ltr;
+/* Swap the columns with order, not direction: a direction flip would also
+   force the column content left-to-right on Persian pages. */
+.feature-split--reverse > :first-child {
+  order: 2;
 }
 
 .feature-split__text {
@@ -1983,6 +1981,13 @@ html[dir="rtl"] .agora-term {
   transition: border-color var(--transition);
 }
 
+/* Addresses and handles read left-to-right on Persian pages too */
+html[dir="rtl"] .wallet-address__value,
+html[dir="rtl"] .custodian__link {
+  direction: ltr;
+  text-align: left;
+}
+
 .wallet-address__value:hover {
   border-color: var(--accent-primary);
 }
@@ -2322,7 +2327,10 @@ html.nav-open {
   .feature-split,
   .feature-split--reverse {
     grid-template-columns: 1fr;
-    direction: ltr;
+  }
+
+  .feature-split--reverse > :first-child {
+    order: 0;
   }
 
   .id-carousel__labels {
